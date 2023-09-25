@@ -67,10 +67,9 @@ Apply normalization techniques (1NF, 2NF, 3NF) to ensure data integrity and mini
 - Plan for schema changes as your system evolves, such as adding new pet attributes.
 - Consider version control for your database schema to track and manage changes.
 
+![Schema Diagram]("https://drive.google.com/file/d/1LRq9cwAHNFE3EyCQFS0OQ1qeWCF9OmMP/view?usp=sharing")
 
-![Schema Diagram](""C:\Users\chira\Downloads\schema-diagram.png"")
 
-
-![Er Diagram]("C:\Users\chira\Downloads\er.diagram.png")
+![Er Diagram]("https://drive.google.com/file/d/1fEVe5vuL47tG-emAV7Z2gulSJmIu5iEu/view?usp=sharing")
 ---
 
