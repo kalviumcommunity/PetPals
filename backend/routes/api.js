@@ -16,9 +16,7 @@ router.get("/createTables", (req, res) => {
       shelter_id INT PRIMARY KEY,
       name VARCHAR(255),
       location VARCHAR(255),
-      contact_info VARCHAR(255),
-      role_id INT,
-      FOREIGN KEY (role_id) REFERENCES Roles(role_id)
+      contact_info VARCHAR(255)
     )
     `,
     `
@@ -29,9 +27,7 @@ router.get("/createTables", (req, res) => {
       age INT,
       gender VARCHAR(255),
       breed VARCHAR(255),
-      medical_history VARCHAR(255),
-      shelter_id INT,
-      FOREIGN KEY (shelter_id) REFERENCES Shelters(shelter_id)
+      medical_history VARCHAR(255)
     )
     `,
     `
@@ -39,32 +35,16 @@ router.get("/createTables", (req, res) => {
       adopter_id INT PRIMARY KEY,
       name VARCHAR(255),
       contact_info VARCHAR(255),
-      housing_details VARCHAR(255),
-      role_id INT,
-      FOREIGN KEY (role_id) REFERENCES Roles(role_id)
-    )
-    `,
-    `
-    CREATE TABLE IF NOT EXISTS Adoption_Requests (
-      request_id INT PRIMARY KEY,
-      date DATE,
-      status VARCHAR(255),
-      pet_id INT,
-      adopter_id INT,
-      FOREIGN KEY (pet_id) REFERENCES Pets(pet_id),
-      FOREIGN KEY (adopter_id) REFERENCES Adopters(adopter_id)
+      housing_details VARCHAR(255)
     )
     `,
     `
     CREATE TABLE IF NOT EXISTS Adoption_Records (
       adoption_id INT PRIMARY KEY,
       adoption_date DATE,
+      status VARCHAR(255),
       fees_paid DECIMAL(10, 2),
-      additional_notes VARCHAR(255),
-      pet_id INT,
-      adopter_id INT,
-      FOREIGN KEY (pet_id) REFERENCES Pets(pet_id),
-      FOREIGN KEY (adopter_id) REFERENCES Adopters(adopter_id)
+      additional_notes VARCHAR(255)
     )
     `
 ];
@@ -101,13 +81,21 @@ router.get("/alterTables", (req, res) => {
   const alterTableQueries = [
     `
     ALTER TABLE Pets
-    ADD FOREIGN KEY (shelter_id) REFERENCES Shelters(shelter_id)`,
-    `ALTER TABLE Shelters ADD FOREIGN KEY (role_id) REFERENCES Roles(role_id)`,
-    `ALTER TABLE Adopters ADD FOREIGN KEY (role_id) REFERENCES Roles(role_id)`,
-    `ALTER TABLE Adoption_Requests ADD FOREIGN KEY (pet_id) REFERENCES Pets(pet_id)`,
-    `ALTER TABLE Adoption_Requests ADD FOREIGN KEY (adopter_id) REFERENCES Adopters(adopter_id)`,
-    `ALTER TABLE Adoption_Records ADD FOREIGN KEY (pet_id) REFERENCES Pets(pet_id)`,
-    `ALTER TABLE Adoption_Records ADD FOREIGN KEY (adopter_id) REFERENCES Adopters(adopter_id)`,
+    ADD COLUMN shelter_id INT,
+    ADD FOREIGN KEY (shelter_id) REFERENCES Shelters(shelter_id);
+    `,
+    `ALTER TABLE Shelters 
+     ADD COLUMN role_id INT,
+     ADD FOREIGN KEY (role_id) REFERENCES Roles(role_id);`,
+    `ALTER TABLE Adopters 
+     ADD COLUMN role_id INT,
+     ADD FOREIGN KEY (role_id) REFERENCES Roles(role_id);`,
+    `ALTER TABLE Adoption_Records 
+     ADD COLUMN pet_id INT,
+     ADD FOREIGN KEY (pet_id) REFERENCES Pets(pet_id);`,
+    `ALTER TABLE Adoption_Records 
+     ADD COLUMN adopter_id INT,
+     ADD FOREIGN KEY (adopter_id) REFERENCES Adopters(adopter_id);`,
 ];
 
 
