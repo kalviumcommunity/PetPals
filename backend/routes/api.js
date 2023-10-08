@@ -162,4 +162,4 @@ module.exports = router;
 
 // 3. Third Normal Form (3NF):
 // 3NF requires that non-key attributes are not transitively dependent on the primary key.
-// In your schema, you've separated the shelter's location information into its own table (Shelters), eliminating the transitive dependency between shelter_id and location. Therefore, it adheres to 3NF.
+// separated the shelter's location information into its own table (Shelters), eliminating the transitive dependency between shelter_id and location. Therefore, it adheres to 3NF.
