@@ -150,16 +150,60 @@ router.get('/dropTables', (req, res) => {
 
   executeQueries(dropTableQueries, 0);
 });
-module.exports = router;
+
+  router.get('/getAdopters', (req, res) => {
+    db.query('SELECT name,role_id FROM Adopters', (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send('Error fetching adopters');
+      } else {
+        console.log(result, 'adopters fetched');
+        res.json(result);
+      }
+    });
+  });
+
+  router.put('/setRoles/:name/:roleID', (req, res) => {
+    const { name, roleID } = req.params;
+  
+    const { password } = req.body;
+  
+    if (!password) {
+      return res.status(400).json({ error: 'Password is required' });
+    }
+  
+    let createUserSQL = `CREATE USER '${name}'@'localhost' IDENTIFIED BY '${password}'`;
+  
+    db.query(createUserSQL, (createUserErr, createUserResult) => {
+      if (createUserErr) {
+        console.log(createUserErr);
+        return res.status(500).send('Error creating user');
+      }
+  
+      let sql = '';
+      if (roleID === '1') {
+        sql = `GRANT ALL PRIVILEGES ON petpals.* TO '${name}'@'localhost'`;
+      } else if (roleID === '2') {
+        sql = `GRANT SELECT, INSERT, UPDATE, DELETE ON petpals.* TO '${name}'@'localhost'`;
+      } else if (roleID === '3') {
+        sql = `GRANT SELECT ON petpals.* TO '${name}'@'localhost'`;
+      } else {
+        return res.status(400).json({ error: 'Invalid role ID' });
+      }
+  
+      db.query(sql, (grantErr, grantResult) => {
+        if (grantErr) {
+          console.log(grantErr);
+          res.status(500).send('Error setting roles');
+        } else {
+          console.log(`Privileges granted for ${name}`);
+          res.json({ message: `Privileges granted for ${name}` });
+        }
+      });
+    });
+  });
+  
+  module.exports = router;
+  
 
 
-// 1. First Normal Form (1NF):
-// Each table appears to contain only atomic values, and there are no repeating groups or arrays. So, it adheres to 1NF.
-
-// 2. Second Normal Form (2NF):
-// To assess 2NF, we need to ensure that non-key attributes are functionally dependent on the entire primary key.
-// In the Pets, Adopters, and Shelters tables, the primary keys are single attributes (pet_id, adopter_id, and shelter_id), and the non-key attributes in these tables are functionally dependent on these primary keys. Therefore, it adheres to 2NF.
-
-// 3. Third Normal Form (3NF):
-// 3NF requires that non-key attributes are not transitively dependent on the primary key.
-// separated the shelter's location information into its own table (Shelters), eliminating the transitive dependency between shelter_id and location. Therefore, it adheres to 3NF.
