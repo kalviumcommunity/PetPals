@@ -173,7 +173,8 @@ router.get('/dropTables', (req, res) => {
     }
   
     let createUserSQL = `CREATE USER '${name}'@'localhost' IDENTIFIED BY '${password}'`;
-  
+    // let createUserSQL = `DROP '${name}'@'localhost'`;
+
     db.query(createUserSQL, (createUserErr, createUserResult) => {
       if (createUserErr) {
         console.log(createUserErr);
